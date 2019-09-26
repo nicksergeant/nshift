@@ -16,10 +16,19 @@
 #import "CBBlueLightClient.h"
 
 int main(int argc, const char * argv[]) {
+    CBBlueLightClient *client = [[CBBlueLightClient alloc] init];
+    
+    float currentStrength;
+    [client getStrength:&currentStrength];
+    NSString *currentStrengthString = [NSString stringWithFormat:@"%.0f", currentStrength * 100];
+    printf("Current: %s", [currentStrengthString UTF8String]);
+    
     if (argc == 1) { return 0; }
     float strength = [[NSString stringWithUTF8String:argv[1]] floatValue] / 100;
-    CBBlueLightClient *client = [[CBBlueLightClient alloc] init];
     if (strength != 0.0) { [client setStrength:strength commit:true]; }
     [client setEnabled:(strength != 0.0)];
+    
+    NSString *nowStrengthString = [NSString stringWithFormat:@"%.0f", strength * 100];
+    printf("\nNow: %s", [nowStrengthString UTF8String]);
     return 0;
 }
